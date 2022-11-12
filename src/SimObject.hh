@@ -4,11 +4,13 @@
 
 using Logging::LoggerPtr;
 
-namespace Sim {
+namespace Sim
+{
     /**
-      * @brief Basic Simulation Object class containing logger pointer
+     * @brief Basic Simulation Object class containing logger pointer
      */
-    class SimObject {
+    class SimObject
+    {
     protected:
         /* pointer to global logger */
         static LoggerPtr logger;
@@ -17,7 +19,7 @@ namespace Sim {
 
     public:
         /**
-         * @brief Constructor of SimObject
+         * @brief Constructor of SimObject class
          * @param name
          */
         SimObject(std::string name);
@@ -28,7 +30,7 @@ namespace Sim {
 
         virtual void advance() = 0;
     };
+
     typedef std::shared_ptr<SimObject> SimObjectPtr;
 
 } // Sim
-

@@ -2,7 +2,8 @@
 
 #include <cstdint>
 
-namespace Sim {
+namespace Sim
+{
     typedef uint64_t Addr; // memory address type
 
     typedef uint32_t Inst; // Instruction data type

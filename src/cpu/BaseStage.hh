@@ -2,8 +2,10 @@
 
 #include "simulation.hh"
 
-namespace Sim {
-    class BaseStage : public SimObject {
+namespace Sim
+{
+    class BaseStage : public SimObject
+    {
         //
     };
 }

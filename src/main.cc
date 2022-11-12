@@ -19,7 +19,8 @@ using namespace ELFLoader;
 /**
  * @brief Helper function to reset working dir
  */
-void reset_dir() {
+void reset_dir()
+{
     char cwd[DIR_NAME_BUFF];
     char *token;
     char *last_token;
@@ -29,12 +30,14 @@ void reset_dir() {
     CL_INFO(cwd);
 
     token = strtok(cwd, "/");
-    while (token != nullptr) {
+    while (token != nullptr)
+    {
         last_token = token;
         token = strtok(nullptr, "/");
     }
 
-    if (strcmp(last_token, "build") == 0) {
+    if (strcmp(last_token, "build") == 0)
+    {
         CL_WARN("Last component of CWD is:");
         CL_WARN(last_token);
         CL_WARN("Changing working directory to upper level '..'");
@@ -45,7 +48,8 @@ void reset_dir() {
     }
 }
 
-int main() {
+int main()
+{
     reset_dir();
     CL_INFO("Sim Starting ...");
 

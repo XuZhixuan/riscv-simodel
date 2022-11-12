@@ -5,7 +5,8 @@
 
 #include <nlohmann/json.hpp>
 
-namespace Config {
+namespace Config
+{
     using JsonConfig = nlohmann::json;
 
     /**
