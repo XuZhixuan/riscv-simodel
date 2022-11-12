@@ -3,14 +3,13 @@
 #include <string>
 #include "elfio/elfio.hpp"
 
-namespace ELFLoader
-{
+namespace ELFLoader {
     typedef ELFIO::elfio Reader;
+
     /**
      * @brief ELFFile wrapper class
      */
-    class ELFFile
-    {
+    class ELFFile {
     public:
         /**
          * @brief Constructor

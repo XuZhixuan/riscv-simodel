@@ -5,23 +5,13 @@
 
 #include <nlohmann/json.hpp>
 
-namespace Config
-{
-    using json = nlohmann::json;
+namespace Config {
+    using JsonConfig = nlohmann::json;
+
     /**
-     * @brief Json Config class, parsing config/xx.config 
+     * @brief Open config file from filename
+     * @param filename
+     * @return
      */
-    class JsonConfig
-    {
-    protected:
-        std::ifstream conf_file;
-        json data;
-    public:
-        /**
-         * @brief Constructor of JsonConfig
-         * 
-         * @param filename path to config json file
-        */
-        JsonConfig(const std::string &filename);
-    };
+    JsonConfig open_config(const std::string &filename);
 }

@@ -1,5 +1,14 @@
 {
-    "logging": {
-        "prefix": ""
-    }
+  "log": {
+    "type": "file",
+    "prefix": "./logs/sim"
+  },
+  "sim": {
+    "cpu": [
+      { "xlen": 64, "type": "BaseCPU" },
+      { "xlen": 64, "type": "BaseCPU" },
+      { "xlen": 64, "type": "BaseCPU" },
+      { "xlen": 64, "type": "BaseCPU" }
+    ]
+  }
 }

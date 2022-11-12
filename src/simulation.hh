@@ -1,24 +1,22 @@
-#include "logging/logging.hh"
+#pragma once
 
-using Logging::LoggerPtr;
+#include <vector>
 
-namespace Simulator
-{
-    void reset_dir();
+#include "common/common.hh"
+#include "SimObject.hh"
+#include "cpu/BaseCPU.hh"
 
-    /**
-     * @brief Basic Simulation Object class containing logger pointer
-    */
-    class SimObject
-    {
+namespace Sim {
+    class Simulation : public SimObject {
     protected:
-        /* pointer to global logger */
-        LoggerPtr logger;
-
+        std::vector<CPU::CPUPtr> m_threads;
     public:
-        SimObject(const std::string &name);
+        Simulation(Config::JsonConfig &config, LoggerPtr logger);
 
-        virtual void evaulate() = 0;
-        virtual void advance() = 0;
+        void tick() override {};
+
+        void advance() override {};
+
+        void evaluate() override {};
     };
 }

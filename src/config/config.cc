@@ -3,18 +3,14 @@
 
 #include "config.hh"
 
-namespace Config
-{
-    JsonConfig::JsonConfig(const std::string &filename)
-    {
-        conf_file.open(filename);
-        if (!conf_file.is_open())
-        {
+namespace Config {
+    JsonConfig open_config(const std::string &filename) {
+        std::ifstream conf_file(filename);
+        if (!conf_file.is_open()) {
             spdlog::error("Failed to open config file: ", filename);
             exit(-1);
         }
 
-        data = data.parse(conf_file);
-        spdlog::info("Loaded config file ", filename);
+        return JsonConfig::parse(conf_file);
     }
 }
