@@ -5,6 +5,7 @@
 #include "common/common.hh"
 #include "SimObject.hh"
 #include "cpu/BaseCPU.hh"
+#include "memory/BaseDram.hh"
 
 namespace Sim
 {
@@ -17,6 +18,8 @@ namespace Sim
     protected:
         /* Vector of CPUs */
         std::vector<CPU::CPUPtr> m_threads;
+
+        Memory::BaseDramPtr m_dram;
 
     public:
         /**

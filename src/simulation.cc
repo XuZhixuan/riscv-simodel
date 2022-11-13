@@ -7,6 +7,10 @@ namespace Sim
     {
         SimObject::logger = std::move(logger);
 
+        m_dram = std::dynamic_pointer_cast<Memory::BaseDram, SimObject>(
+            Factory::Factory::instance().newComponent(config["memory"]["type"], config["memory"], 0)
+        );
+
         int cpu_id = 0;
         for (auto &cfg : config["cpu"])
         {

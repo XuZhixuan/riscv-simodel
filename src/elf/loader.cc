@@ -3,12 +3,82 @@
 
 namespace ELFLoader
 {
-    ELFFile::ELFFile(const std::string &filename)
+
+    ELFFile::ELFFile(const std::string &filename, Logging::LoggerPtr logger) : logger(logger)
     {
         if (!reader.load(filename))
         {
-            CL_FAIL("Failed to load elf file: ", filename);
+            logger->error("Failed to load elf file: ", filename);
             exit(-1);
         }
     }
+
+    sectionPtr ELFFile::get_symbol_table()
+    {
+        for (size_t i = 0; i < reader.sections.size(); ++i)
+        {
+            sectionPtr sec = reader.sections[i];
+            if (sec->get_name() == ".symtab")
+            {
+                return sec;
+            }
+        }
+
+        logger->error("Can't get symbol table");
+        exit(-1);
+    }
+
+    Addr ELFFile::get_symbol_by_name(const std::string &symbol_name)
+    {
+        const ELFIO::symbol_section_accessor symbol_access(reader, get_symbol_table());
+
+        Addr address;
+        ELFIO::Elf_Xword size;
+        u_int8_t bind, type;
+        ELFIO::Elf_Half section_index;
+        u_int8_t other;
+
+        bool has_symbol = symbol_access.get_symbol(symbol_name, address, size, bind, type, section_index, other);
+        return has_symbol ? address : 0;
+
+        logger->critical("Failed to get {} in symbol table", symbol_name.c_str());
+    }
+
+    Addr ELFFile::get_entry()
+    {
+        return get_symbol_by_name("_start");
+    }
+
+    Addr ELFFile::get_size()
+    {
+        return get_symbol_by_name("_end") - get_entry();
+    }
+
+    Addr ELFFile::get_fromhost()
+    {
+        return get_symbol_by_name("fromhost");
+    }
+
+    Addr ELFFile::get_tohost()
+    {
+        return get_symbol_by_name("tohost");
+    }
+
+    bool ELFFile::load(Sim::Memory::BaseDramPtr dram)
+    {
+        for (size_t i = 0; i < reader.segments.size(); i++)
+        {
+            const segmentPtr seg = reader.segments[i];
+            const size_t size = seg->get_file_size();
+            const uint64_t addr = seg->get_physical_address() - get_entry();
+            const char *data = seg->get_data();
+
+            if (data != nullptr) {
+                // TODO: put data into dram
+            }
+        }
+
+        return true;
+    }
+
 }

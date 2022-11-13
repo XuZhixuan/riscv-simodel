@@ -9,6 +9,11 @@
       { "xlen": 64, "type": "BaseCPU" },
       { "xlen": 64, "type": "BaseCPU" },
       { "xlen": 64, "type": "BaseCPU" }
-    ]
+    ],
+    "memory": {
+      "type": "BaseDRAM",
+      "base": 2147483648,
+      "length": 268435456
+    }
   }
 }
