@@ -25,7 +25,7 @@ namespace Sim
          * @param config
          * @param logger
          */
-        Simulation(Config::JsonConfig &config, LoggerPtr logger);
+        Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger);
 
         void tick() override{};
 

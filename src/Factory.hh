@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <utility>
 
 #include "common/common.hh"
 #include "config/config.hh"

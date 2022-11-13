@@ -1,10 +1,8 @@
-#include <utility>
-
 #include "simulation.hh"
 
 namespace Sim
 {
-    Simulation::Simulation(Config::JsonConfig &config, LoggerPtr logger)
+    Simulation::Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger)
         : SimObject("Simulator")
     {
         SimObject::logger = std::move(logger);

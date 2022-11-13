@@ -1,8 +1,7 @@
 #pragma once
 
+#include "common/common.hh"
 #include "logging/logging.hh"
-
-using Logging::LoggerPtr;
 
 namespace Sim
 {
@@ -13,8 +12,9 @@ namespace Sim
     {
     protected:
         /* pointer to global logger */
-        static LoggerPtr logger;
+        static Logging::LoggerPtr logger;
 
+        /* name of the sim object */
         std::string name;
 
     public:

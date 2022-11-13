@@ -1,10 +1,9 @@
 #pragma once
 
-#include "common/types.hh"
 #include "common/common.hh"
+#include "common/types.hh"
 #include "SimObject.hh"
 #include "Factory.hh"
-//#include "BaseStage.hh"
 
 namespace Sim::CPU
 {
