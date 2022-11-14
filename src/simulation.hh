@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "common/common.hh"
+#include "elf/loader.hh"
 #include "SimObject.hh"
 #include "cpu/BaseCPU.hh"
 #include "memory/BaseDram.hh"
@@ -21,6 +22,8 @@ namespace Sim
 
         Memory::BaseDramPtr m_dram;
 
+        ELFLoader::ELFFile elf;
+
     public:
         /**
          * @brief Constructor of Simulation class
@@ -28,7 +31,7 @@ namespace Sim
          * @param config
          * @param logger
          */
-        Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger);
+        Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger, ELFLoader::ELFFile elf);
 
         void tick() override{};
 

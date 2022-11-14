@@ -22,13 +22,26 @@ namespace Sim
          * @brief Constructor of SimObject class
          * @param name
          */
-        SimObject(std::string name);
+        explicit SimObject(std::string name);
+
+        /**
+         * Virtual deconstruct is necessary
+         */
+        virtual ~SimObject() = default;
 
         virtual void tick() = 0;
 
         virtual void evaluate() = 0;
 
         virtual void advance() = 0;
+
+        template<typename ...Args>
+        void do_assert(bool cond, Args &&... args) {
+            if (!cond) {
+                logger->error(args...);
+                abort();
+            }
+        }
     };
 
     typedef std::shared_ptr<SimObject> SimObjectPtr;

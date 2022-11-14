@@ -56,7 +56,7 @@ int main()
     Config::JsonConfig config = open_config(CONFIG_FILE);
     Logging::LoggerPtr logger = init_logging(config["log"]);
     ELFLoader::ELFFile elf("./tests/bbl-linux", logger);
-    Simulation sim(config["sim"], logger);
+    Simulation sim(config["sim"], logger, std::move(elf));
 
     return 0;
 }

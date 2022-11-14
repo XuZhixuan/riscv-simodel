@@ -31,7 +31,7 @@ namespace ELFLoader
          *
          * @param filename name of ELF file to load
          */
-        ELFFile(const std::string &filename, Logging::LoggerPtr logger);
+        ELFFile(const std::string &filename, const Logging::LoggerPtr& logger);
 
         /**
          * @brief get symbol table
@@ -83,6 +83,6 @@ namespace ELFLoader
          * @return true 
          * @return false 
          */
-        bool load(Sim::Memory::BaseDramPtr dram);
+        bool load(const Sim::Memory::BaseDramPtr& dram);
     };
 }

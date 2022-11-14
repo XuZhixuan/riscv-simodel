@@ -4,7 +4,7 @@
 namespace ELFLoader
 {
 
-    ELFFile::ELFFile(const std::string &filename, Logging::LoggerPtr logger) : logger(logger)
+    ELFFile::ELFFile(const std::string &filename, const Logging::LoggerPtr& logger) : logger(logger)
     {
         if (!reader.load(filename))
         {
@@ -15,13 +15,9 @@ namespace ELFLoader
 
     sectionPtr ELFFile::get_symbol_table()
     {
-        for (size_t i = 0; i < reader.sections.size(); ++i)
+        for (auto sec: reader.sections)
         {
-            sectionPtr sec = reader.sections[i];
-            if (sec->get_name() == ".symtab")
-            {
-                return sec;
-            }
+            if (sec->get_name() == ".symtab") return sec;
         }
 
         logger->error("Can't get symbol table");
@@ -39,9 +35,10 @@ namespace ELFLoader
         u_int8_t other;
 
         bool has_symbol = symbol_access.get_symbol(symbol_name, address, size, bind, type, section_index, other);
-        return has_symbol ? address : 0;
+        if (has_symbol) return address;
 
         logger->critical("Failed to get {} in symbol table", symbol_name.c_str());
+        return 0;
     }
 
     Addr ELFFile::get_entry()
@@ -64,17 +61,17 @@ namespace ELFLoader
         return get_symbol_by_name("tohost");
     }
 
-    bool ELFFile::load(Sim::Memory::BaseDramPtr dram)
+    bool ELFFile::load(const Sim::Memory::BaseDramPtr &dram)
     {
-        for (size_t i = 0; i < reader.segments.size(); i++)
+        for (auto seg: reader.segments)
         {
-            const segmentPtr seg = reader.segments[i];
             const size_t size = seg->get_file_size();
-            const uint64_t addr = seg->get_physical_address() - get_entry();
-            const char *data = seg->get_data();
+            const uint64_t addr = seg->get_physical_address();
+            const u_char *data = (u_char *) seg->get_data();
 
-            if (data != nullptr) {
-                // TODO: put data into dram
+            if (data != nullptr)
+            {
+                dram->write(data, addr, size);
             }
         }
 

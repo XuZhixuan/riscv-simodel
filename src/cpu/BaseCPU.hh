@@ -3,6 +3,7 @@
 #include "common/common.hh"
 #include "common/types.hh"
 #include "SimObject.hh"
+#include "memory/BaseDram.hh"
 #include "Factory.hh"
 
 namespace Sim::CPU
@@ -19,6 +20,9 @@ namespace Sim::CPU
         // Arch X-Length
         Xlen xlen;
 
+        // Pointer to DRAM, maybe used to direct access, timing access or assigned to sub modules
+        Memory::BaseDramPtr m_dram;
+
     public:
         /**
          * @brief Constructor of BaseCPU
@@ -26,7 +30,7 @@ namespace Sim::CPU
          * @param config
          * @param id
          */
-        BaseCPU(Config::JsonConfig &config, id_t id);
+        BaseCPU(const Config::JsonConfig &config, id_t id, Memory::BaseDramPtr);
 
         void tick() override;
 

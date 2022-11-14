@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <functional>
 
 #include "common/common.hh"
 #include "config/config.hh"
@@ -10,29 +11,20 @@
 namespace Sim::Factory
 {
     /**
-     * @brief Base Register for SimObject
-     *
-     */
-    class BaseRegistry
-    {
-    public:
-        /**
-         * @brief Pure virtual function interface of creating components
-         *
-         * @return SimObjectPtr (std::shared_ptr<SimObject>)
-         */
-        virtual SimObjectPtr createComponent(Config::JsonConfig, id_t) = 0;
-    };
-
-    /**
      * @brief SimObject Construct Factory
      *
      */
-    class Factory
+    template<typename ...Args>
+    class BaseFactory
     {
     protected:
-        /* Mapping registered class name to its contructor */
-        std::map<std::string, BaseRegistry *> m_ComponentRegistries{};
+        typedef std::function<SimObjectPtr(const Config::JsonConfig &, id_t, Args...)> createComponentFunc;
+
+        /* Mapping registered class name to its constructor */
+        std::map<std::string, createComponentFunc> m_ComponentRegistries{};
+
+        // Instantiate of Factory class out of this scope is not allowed
+        BaseFactory() = default;
 
     public:
         /**
@@ -40,9 +32,9 @@ namespace Sim::Factory
          * 
          * @return Factory& 
          */
-        static Factory &instance()
+        static BaseFactory &instance()
         {
-            static Factory instance;
+            static BaseFactory instance;
             return instance;
         }
 
@@ -52,10 +44,29 @@ namespace Sim::Factory
          * @param type 
          * @param registry 
          */
-        void registerComponent(const std::string &type, BaseRegistry *registry)
+        void registerComponent(const std::string &type, createComponentFunc registry)
         {
             m_ComponentRegistries[type] = registry;
         }
+
+        template<class Component_T>
+        class Register
+        {
+        public:
+            Register(const std::string &type)
+            {
+                BaseFactory::instance().registerComponent(
+                        type,
+                        &Register::createComponent
+                );
+            }
+
+        protected:
+            static SimObjectPtr createComponent(const Config::JsonConfig &cfg, id_t id, Args... args)
+            {
+                return std::make_shared<Component_T>(cfg, id, args...);
+            }
+        };
 
         /**
          * @brief Get a new SimObject instance with its name and config
@@ -65,49 +76,17 @@ namespace Sim::Factory
          * @param id 
          * @return SimObjectPtr (std::shared_ptr<SimObject>)
          */
-        SimObjectPtr newComponent(const std::string &type, Config::JsonConfig cfg, id_t id)
+        SimObjectPtr newComponent(const std::string &type, const Config::JsonConfig &cfg, id_t id, Args ...args)
         {
-            return m_ComponentRegistries[type]->createComponent(std::move(cfg), id);
+            return m_ComponentRegistries[type](cfg, id, args...);
         }
 
-    private:
-        // Instaniate of Factory class is not allowed
-        Factory() {};
-
-        // Copying of Factory object is not allowed
-        Factory(const Factory &) = delete;
-        Factory &operator=(Factory &) = delete;
-    };
-
-    /**
-     * @brief Drived Register for class drived from SimObject
-     * 
-     * @tparam Component_T 
-     */
-    template <class Component_T>
-    class Registry : BaseRegistry
-    {
     public:
-        /**
-         * @brief Constructor Registry and register the class to factory map
-         * 
-         * @param type 
-         */
-        explicit Registry(const std::string &type)
-        {
-            Factory::instance().registerComponent(type, this);
-        }
+        // Copying of Factory object is not allowed
+        BaseFactory(const BaseFactory &) = delete;
 
-        /**
-         * @brief Implementation of creating the new SimObject instance
-         * 
-         * @param cfg 
-         * @param id 
-         * @return SimObjectPtr (std::shared_ptr<SimObject>)
-         */
-        SimObjectPtr createComponent(Config::JsonConfig cfg, id_t id) override
-        {
-            return std::make_shared<Component_T>(cfg, id);
-        }
+        BaseFactory(BaseFactory &&) = delete;
+
+        BaseFactory &operator=(BaseFactory &) = delete;
     };
 }

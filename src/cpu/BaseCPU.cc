@@ -2,12 +2,11 @@
 
 namespace Sim::CPU
 {
-    // Use this to register BaseCPU with name "BaseCPU"
-    Factory::Registry<BaseCPU> baseCPURegistry("BaseCPU");
+// Use this to register BaseCPU with name "BaseCPU"
+    Factory::BaseFactory<Memory::BaseDramPtr>::Register<BaseCPU> BaseCPURegistry("BaseCPU");
 
-    BaseCPU::BaseCPU(Config::JsonConfig &config, id_t id)
-        : SimObject(
-              config.find("name") == config.end() ? "CPU" : config["name"])
+    BaseCPU::BaseCPU(const Config::JsonConfig &config, id_t id, Memory::BaseDramPtr)
+            : SimObject(config.find("name") == config.end() ? "CPU" : config["name"])
     {
         tid = id;
         xlen = config["xlen"];
@@ -28,4 +27,4 @@ namespace Sim::CPU
     {
         //
     }
-}
+} // namespace Sim::CPU
