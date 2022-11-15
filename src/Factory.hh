@@ -53,7 +53,7 @@ namespace Sim::Factory
         class Register
         {
         public:
-            Register(const std::string &type)
+            explicit Register(const std::string &type)
             {
                 BaseFactory::instance().registerComponent(
                         type,

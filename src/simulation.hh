@@ -30,6 +30,7 @@ namespace Sim
          *
          * @param config
          * @param logger
+         * @param elf
          */
         Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger, ELFLoader::ELFFile elf);
 

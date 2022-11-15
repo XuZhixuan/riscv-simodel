@@ -3,11 +3,17 @@
 #include "common/common.hh"
 #include "common/types.hh"
 #include "SimObject.hh"
-#include "memory/BaseDram.hh"
 #include "Factory.hh"
+#include "memory/BaseDram.hh"
+#include "pipeline/BaseStage.hh"
 
 namespace Sim::CPU
 {
+    namespace Pipeline
+    {
+        class BaseStage;
+        typedef std::shared_ptr<BaseStage> BaseStagePtr;
+    }
     /**
      * @brief Processor class
      */
@@ -20,8 +26,10 @@ namespace Sim::CPU
         // Arch X-Length
         Xlen xlen;
 
-        // Pointer to DRAM, maybe used to direct access, timing access or assigned to sub modules
+        // Pointer to DRAM, maybe used to direct access, timing access or assigned to submodules
         Memory::BaseDramPtr m_dram;
+
+        std::vector<Pipeline::BaseStagePtr> m_stages;
 
     public:
         /**
@@ -31,6 +39,8 @@ namespace Sim::CPU
          * @param id
          */
         BaseCPU(const Config::JsonConfig &config, id_t id, Memory::BaseDramPtr);
+
+        ~BaseCPU() override;
 
         void tick() override;
 

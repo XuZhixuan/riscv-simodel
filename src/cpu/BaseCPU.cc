@@ -6,11 +6,29 @@ namespace Sim::CPU
     Factory::BaseFactory<Memory::BaseDramPtr>::Register<BaseCPU> BaseCPURegistry("BaseCPU");
 
     BaseCPU::BaseCPU(const Config::JsonConfig &config, id_t id, Memory::BaseDramPtr)
-            : SimObject(config.find("name") == config.end() ? "CPU" : config["name"])
+            : SimObject(fmt::format("CPU{:2d}", id))
     {
         tid = id;
         xlen = config["xlen"];
+
+        for (auto &cfg: config["stages"])
+        {
+            m_stages.push_back(std::dynamic_pointer_cast<Pipeline::BaseStage>(
+                    Factory::BaseFactory<BaseCPU&>::instance().newComponent(cfg["type"], cfg, id, *this)
+            ));
+        }
+
+        for (auto &stg: m_stages)
+        {
+            stg->evaluate();
+        }
+
         logger->info("Initiated CPU");
+    }
+
+    BaseCPU::~BaseCPU()
+    {
+        //
     }
 
     void BaseCPU::tick()

@@ -1,4 +1,3 @@
-#include "common/lprint.hh"
 #include "spdlog/spdlog.h"
 
 #include "config.hh"

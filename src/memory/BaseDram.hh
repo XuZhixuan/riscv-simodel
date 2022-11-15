@@ -51,7 +51,7 @@ namespace Sim::Memory
          */
         BaseDram(const Config::JsonConfig &config, id_t id);
 
-        ~BaseDram();
+        ~BaseDram() override;
 
         /**
          * @brief SimObject Interface function, unimplemented.

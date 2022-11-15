@@ -5,10 +5,16 @@
   },
   "sim": {
     "cpu": [
-      { "xlen": 64, "type": "BaseCPU" },
-      { "xlen": 64, "type": "BaseCPU" },
-      { "xlen": 64, "type": "BaseCPU" },
-      { "xlen": 64, "type": "BaseCPU" }
+      {
+        "xlen": 64,
+        "type": "BaseCPU",
+        "stages": [
+          {
+            "type": "Fetch1",
+            "fetch_byte_width": 8
+          }
+        ]
+      }
     ],
     "memory": {
       "type": "BaseDRAM",

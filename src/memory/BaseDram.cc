@@ -22,14 +22,14 @@ namespace Sim::Memory
         delete m_raw_mem;
         delete m_io_mem;
         delete m_hole_mem;
-    };
+    }
 
     inline bool BaseDram::checkRange(Addr addr, Addr length) const
     {
         return (addr >= m_base) && (addr + length < m_base + m_length);
     }
 
-    u_char* BaseDram::read(u_char* dest, Addr addr, Addr length)
+    u_char *BaseDram::read(u_char *dest, Addr addr, Addr length)
     {
         do_assert(checkRange(addr, length - 1), "Access out of range address : {:#x}:{:#x}", addr, addr + length - 1);
         std::memcpy(dest, m_raw_mem + addr - m_base, length);
@@ -45,7 +45,7 @@ namespace Sim::Memory
     uint64_t BaseDram::readDouble(Addr addr)
     {
         do_assert(checkRange(addr, 7), "Access out of range address : {:#x}", addr);
-        return *(u_int64_t*)(m_raw_mem + addr - m_base);
+        return *(u_int64_t *) (m_raw_mem + addr - m_base);
     }
 
     void BaseDram::write(const u_char *data, Addr addr, Addr length)
@@ -72,7 +72,7 @@ namespace Sim::Memory
     void BaseDram::writeDouble(uint64_t data, Addr addr)
     {
         do_assert(checkRange(addr, 7), "Access out of range address : {:#x}", addr);
-        std::memcpy(m_raw_mem + addr - m_base, (u_char*)(&data), 8);
+        std::memcpy(m_raw_mem + addr - m_base, (u_char *) (&data), 8);
     }
 
 }
