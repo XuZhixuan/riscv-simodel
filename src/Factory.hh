@@ -18,7 +18,7 @@ namespace Sim::Factory
     class BaseFactory
     {
     protected:
-        typedef std::function<SimObjectPtr(const Config::JsonConfig &, id_t, Args...)> createComponentFunc;
+        typedef std::function<SimObjectPtr(const Config::JsonConfig &, Args...)> createComponentFunc;
 
         /* Mapping registered class name to its constructor */
         std::map<std::string, createComponentFunc> m_ComponentRegistries{};
@@ -73,9 +73,9 @@ namespace Sim::Factory
              * @param args
              * @return
              */
-            static SimObjectPtr createComponent(const Config::JsonConfig &cfg, id_t id, Args... args)
+            static SimObjectPtr createComponent(const Config::JsonConfig &cfg, Args... args)
             {
-                return std::make_shared<Component_T>(cfg, id, args...);
+                return std::make_shared<Component_T>(cfg, args...);
             }
         };
 
@@ -87,9 +87,9 @@ namespace Sim::Factory
          * @param args
          * @return SimObjectPtr new component with given config
          */
-        SimObjectPtr newComponent(const std::string &type, const Config::JsonConfig &cfg, id_t id, Args ...args)
+        SimObjectPtr newComponent(const std::string &type, const Config::JsonConfig &cfg, Args ...args)
         {
-            return m_ComponentRegistries[type](cfg, id, args...);
+            return m_ComponentRegistries[type](cfg, args...);
         }
 
     public:

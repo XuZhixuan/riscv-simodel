@@ -3,9 +3,12 @@
 #include "common/common.hh"
 #include "SimObject.hh"
 #include "Factory.hh"
+
 #include "memory/BaseDram.hh"
-#include "pipeline/BaseStage.hh"
 #include "timing/TimeBuffer.hh"
+#include "pipeline/BaseStage.hh"
+
+#include "DynInst.hh"
 
 namespace Sim::CPU
 {
@@ -26,6 +29,8 @@ namespace Sim::CPU
 
         // Arch X-Length
         Xlen xlen;
+
+    protected:
 
         // Pointer to DRAM, maybe used to direct access, timing access or assigned to submodules
         Memory::BaseDramPtr m_dram;

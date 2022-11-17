@@ -47,10 +47,9 @@ namespace Sim::Memory
         /**
          * @brief Construct a new BaseDram object according to config
          * 
-         * @param cfg 
-         * @param id 
+         * @param cfg
          */
-        BaseDram(const Config::JsonConfig &config, id_t id);
+        explicit BaseDram(const Config::JsonConfig &config);
 
         ~BaseDram() override;
 

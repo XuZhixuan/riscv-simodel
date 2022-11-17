@@ -6,7 +6,7 @@
 namespace Sim::CPU
 {
 // Use this to register BaseCPU with name "BaseCPU"
-    Factory::BaseFactory<Memory::BaseDramPtr>::Register<BaseCPU> BaseCPURegistry("BaseCPU");
+    Factory::BaseFactory<id_t, Memory::BaseDramPtr>::Register<BaseCPU> BaseCPURegistry("BaseCPU");
 
     BaseCPU::BaseCPU(const Config::JsonConfig &config, id_t id, Memory::BaseDramPtr dram)
             : SimObject(fmt::format("CPU {:02d}", id)), m_dram(std::move(dram))
@@ -17,7 +17,7 @@ namespace Sim::CPU
         for (auto &cfg: config["stages"])
         {
             m_stages.push_back(std::dynamic_pointer_cast<Pipeline::BaseStage>(
-                    Factory::BaseFactory<BaseCPU &>::instance().newComponent(cfg["type"], cfg, id, *this)
+                    Factory::BaseFactory<BaseCPU &>::instance().newComponent(cfg["type"], cfg, *this)
             ));
         }
 

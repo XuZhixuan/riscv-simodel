@@ -20,7 +20,9 @@ include_directories(
     ${elfio_SOURCE_DIR}
 )
 
-file(GLOB_RECURSE SRC_LIST src "*.cc")
+file(GLOB_RECURSE SRC_LIST "src/**.cc")
+
+message(STATUS ${SRC_LIST})
 
 add_executable(simodel ${SRC_LIST})
 target_link_libraries(simodel PRIVATE nlohmann_json::nlohmann_json spdlog elfio)

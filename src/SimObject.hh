@@ -2,6 +2,7 @@
 
 #include "common/common.hh"
 #include "logging/logging.hh"
+#include "timing/Clock.hh"
 
 namespace Sim
 {
@@ -38,13 +39,21 @@ namespace Sim
         virtual void advance() = 0;
 
         template<typename ...Args>
-        void do_assert(bool cond, Args &&... args)
+        inline void do_assert(bool cond, fmt::format_string<Args...> fmt, Args &&... args)
         {
             if (!cond)
             {
-                logger->error(args...);
+                std::string content = fmt::format("Cycle {:>5}, ({:^25}) {}", Clock::cur_tick(), name, fmt);
+                logger->error(content, std::forward<Args>(args)...);
                 abort();
             }
+        }
+
+        template<typename ...Args>
+        inline void trace(fmt::format_string<Args...> fmt, Args &&... args)
+        {
+            std::string content = fmt::format("Cycle {:>5}, ({:^25}) {}", Clock::cur_tick(), fmt);
+            logger->trace(content, std::forward<Args>(args)...);
         }
     };
 

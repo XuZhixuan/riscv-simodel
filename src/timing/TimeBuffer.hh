@@ -242,7 +242,7 @@ namespace Sim::Timing
                     m_out_port->invalid();
                     if (m_latency && !m_queue.empty() && m_queue.front().dest_tick <= Clock::cur_tick())
                     {
-                        m_out_port->set_data(m_queue.front());
+                        m_out_port->set_data(m_queue.front().data);
                         m_queue.pop();
                     }
                 }
@@ -262,5 +262,23 @@ namespace Sim::Timing
          */
         void evaluate() override
         {}
+
+        /**
+         * @brief get the input port
+         * @return pointer to input port
+         */
+        const std::shared_ptr<BasePort> &get_in_port() const
+        {
+            return m_in_port;
+        }
+
+        /**
+         * @brief get the output port
+         * @return pointer to output port
+         */
+        const std::shared_ptr<BasePort> &get_out_port() const
+        {
+            return m_out_port;
+        }
     };
 }

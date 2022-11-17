@@ -12,7 +12,7 @@ namespace Sim
         SimObject::logger = std::move(logger);
 
         m_dram = std::dynamic_pointer_cast<Memory::BaseDram, SimObject>(
-                Factory::BaseFactory<>::instance().newComponent(config["memory"]["type"], config["memory"], 0)
+                Factory::BaseFactory<>::instance().newComponent(config["memory"]["type"], config["memory"])
         );
 
         elf.load_to(m_dram);
@@ -23,7 +23,7 @@ namespace Sim
         for (auto &cfg: config["cpu"])
         {
             m_threads.push_back(std::static_pointer_cast<CPU::BaseCPU, SimObject>(
-                    Factory::BaseFactory<Memory::BaseDramPtr>::instance().newComponent(cfg["type"], cfg, cpu_id++, m_dram)
+                    Factory::BaseFactory<id_t, Memory::BaseDramPtr>::instance().newComponent(cfg["type"], cfg, cpu_id++, m_dram)
             ));
         }
     }
@@ -89,7 +89,7 @@ namespace Sim
 
                     for (size_t i = 0; i < print_len; i++)
                         print_str << m_dram->readByte(print_addr + i);
-                    
+
                     // Set fromhost to indicate finished printing, clear tohost
                     m_dram->writeDouble(1, fromhost_addr);
                     m_dram->writeDouble(0, tohost_addr);

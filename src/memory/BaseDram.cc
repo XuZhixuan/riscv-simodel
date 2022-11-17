@@ -6,7 +6,7 @@ namespace Sim::Memory
 {
     Factory::BaseFactory<>::Register<BaseDram> baseDramRegistry("BaseDRAM");
 
-    BaseDram::BaseDram(const Config::JsonConfig &cfg, id_t id) : SimObject("BaseDRAM")
+    BaseDram::BaseDram(const Config::JsonConfig &cfg) : SimObject("BaseDRAM")
     {
         m_base = cfg["base"];
         m_length = cfg["length"];
