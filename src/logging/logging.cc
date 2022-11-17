@@ -3,7 +3,6 @@
 #include <iomanip>
 
 #include "logging.hh"
-#include "common/lprint.hh"
 
 namespace Logging
 {
@@ -20,8 +19,7 @@ namespace Logging
         }
         else
         {
-            CL_FAIL("Unknown logging type: ");
-            CL_FAIL(cfg["type"]);
+            spdlog::error("Unknown logging type: {}", cfg["type"]);
             exit(-1);
         }
 
@@ -37,15 +35,14 @@ namespace Logging
         std::stringstream filename;
         std::time_t t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         filename << prefix << std::put_time(std::localtime(&t), "-%F-%T.log");
-        CL_INFO("Logs appending to file:");
-        CL_INFO(filename.str());
+        spdlog::info("Logs appending to file: {}", filename.str());
         auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename.str());
         return std::make_shared<spdlog::logger>("SIModel", sink);
     }
 
     LoggerPtr _init_logging()
     {
-        CL_INFO("Logs appending to console");
+        spdlog::info("Logs appending to console");
         auto sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>(spdlog::color_mode::automatic);
         return std::make_shared<spdlog::logger>("SIModel", sink);
     }

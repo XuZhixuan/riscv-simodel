@@ -10,6 +10,9 @@
 
 namespace Sim
 {
+    // Global simulation finished flag
+    extern bool finished;
+
     /**
      * @brief Simulation Class, containing CPUs & DRAM
      *
@@ -22,7 +25,20 @@ namespace Sim
 
         Memory::BaseDramPtr m_dram;
 
-        ELFLoader::ELFFile elf;
+        // ELF instance loaded
+        ELFLoader::ELFFile &elf;
+
+        // Address of tohost in elf
+        Addr tohost_addr;
+
+        // Data read from tohost
+        uint64_t tohost = 0;
+
+        // Address of fromhost in elf
+        Addr fromhost_addr;
+
+        // Data write to fromhost
+        uint64_t fromhost = 0;
 
     public:
         /**
@@ -32,12 +48,27 @@ namespace Sim
          * @param logger
          * @param elf
          */
-        Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger, ELFLoader::ELFFile elf);
+        Simulation(Config::JsonConfig &config, Logging::LoggerPtr logger, ELFLoader::ELFFile &elf);
 
-        void tick() override{};
+        /**
+         * @brief Check if content exits in tohost, to exit or print.
+         */
+        void check_tohost();
 
-        void advance() override{};
+        /**
+         * @brief reset the simulation before start running.
+         */
+        void reset() override;
 
-        void evaluate() override{};
+        /**
+         * @brief tick for every hart in this simulation, then check tohost.
+         */
+        void tick() override;
+
+        void advance() override
+        {};
+
+        void evaluate() override
+        {};
     };
 }

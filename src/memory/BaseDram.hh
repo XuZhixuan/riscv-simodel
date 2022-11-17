@@ -39,7 +39,8 @@ namespace Sim::Memory
          * @brief Construct a new BaseDram object
          *
          */
-        BaseDram() : SimObject("BaseDRAM") {
+        BaseDram() : SimObject("BaseDRAM")
+        {
             m_raw_mem = m_io_mem = m_hole_mem = nullptr;
         }
 
@@ -56,17 +57,26 @@ namespace Sim::Memory
         /**
          * @brief SimObject Interface function, unimplemented.
          */
-        void tick() override {}
+        void reset() override
+        {}
+
+        /**
+         * @brief SimObject Interface function, unimplemented.
+         */
+        void tick() override
+        {}
 
         /**
          * @brief SimObject Interface function, unimplemented.
         */
-        void evaluate() override {}
+        void evaluate() override
+        {}
 
         /**
          * @brief SimObject Interface function, unimplemented.
         */
-        void advance() override {}
+        void advance() override
+        {}
 
         /**
          * @brief check the given address & length is in range of memory
@@ -74,7 +84,7 @@ namespace Sim::Memory
          * @param length
          * @return
          */
-        [[nodiscard]] inline bool checkRange(Addr addr, Addr length) const;
+        [[nodiscard]] inline bool checkRange(Addr addr, Addr length = 0) const;
 
         /**
          * @brief Put data of memory from addr to addr + length to dest
@@ -82,7 +92,7 @@ namespace Sim::Memory
          * @param length
          * @return
          */
-        u_char* read(u_char* dest, Addr addr, Addr length);
+        u_char *read(u_char *dest, Addr addr, Addr length);
 
         /**
          * Read a single byte and return
@@ -104,7 +114,7 @@ namespace Sim::Memory
          * @param addr
          * @param length
          */
-        void write(const u_char* data, Addr addr, Addr length);
+        void write(const u_char *data, Addr addr, Addr length);
 
         /**
          * @brief put data into raw memory at addr to addr + length but mask some byte
@@ -113,7 +123,7 @@ namespace Sim::Memory
          * @param length
          * @param mask
          */
-        void write(const u_char* data, Addr addr, Addr length, Addr mask);
+        void write(const u_char *data, Addr addr, Addr length, Addr mask);
 
         /**
          * @brief put a byte data into raw memory at addr

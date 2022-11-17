@@ -17,3 +17,5 @@ typedef uint8_t Xlen; // Arch X length type
 typedef uint64_t Reg; // Reg data type
 
 typedef uint16_t ThreadId; // Thread ID type
+
+typedef uint64_t Latency;

@@ -29,6 +29,8 @@ namespace Sim
          */
         virtual ~SimObject() = default;
 
+        virtual void reset() = 0;
+
         virtual void tick() = 0;
 
         virtual void evaluate() = 0;
@@ -36,8 +38,10 @@ namespace Sim
         virtual void advance() = 0;
 
         template<typename ...Args>
-        void do_assert(bool cond, Args &&... args) {
-            if (!cond) {
+        void do_assert(bool cond, Args &&... args)
+        {
+            if (!cond)
+            {
                 logger->error(args...);
                 abort();
             }

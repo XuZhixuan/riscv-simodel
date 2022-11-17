@@ -4,6 +4,7 @@
     "prefix": "./logs/sim"
   },
   "sim": {
+    "max_cycles": 10000000,
     "cpu": [
       {
         "xlen": 64,

@@ -5,7 +5,7 @@ namespace Sim
     Logging::LoggerPtr SimObject::logger = nullptr;
 
     SimObject::SimObject(std::string _name)
-        : name(std::move(_name))
+            : name(std::move(_name))
     {
         //
     }

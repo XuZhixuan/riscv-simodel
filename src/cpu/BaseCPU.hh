@@ -1,17 +1,18 @@
 #pragma once
 
 #include "common/common.hh"
-#include "common/types.hh"
 #include "SimObject.hh"
 #include "Factory.hh"
 #include "memory/BaseDram.hh"
 #include "pipeline/BaseStage.hh"
+#include "timing/TimeBuffer.hh"
 
 namespace Sim::CPU
 {
     namespace Pipeline
     {
         class BaseStage;
+
         typedef std::shared_ptr<BaseStage> BaseStagePtr;
     }
     /**
@@ -40,7 +41,15 @@ namespace Sim::CPU
          */
         BaseCPU(const Config::JsonConfig &config, id_t id, Memory::BaseDramPtr);
 
-        ~BaseCPU() override;
+        ~BaseCPU() override = default;
+
+        void reset() override;
+
+        /**
+         * @brief Reset CPU to start at Addr
+         * @param addr running start address
+         */
+        void reset(Addr addr);
 
         void tick() override;
 

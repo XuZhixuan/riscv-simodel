@@ -3,7 +3,7 @@
 namespace CPU
 {
 
-enum 
+    enum
 /* instructions encoding */
 #define BRU_JAR 0
 #define BRU_JALR 1

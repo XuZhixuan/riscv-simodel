@@ -1,10 +1,9 @@
 #include "loader.hh"
-#include "common/lprint.hh"
 
 namespace ELFLoader
 {
 
-    ELFFile::ELFFile(const std::string &filename, const Logging::LoggerPtr& logger) : logger(logger)
+    ELFFile::ELFFile(const std::string &filename, const Logging::LoggerPtr &logger) : logger(logger)
     {
         if (!reader.load(filename))
         {
@@ -61,7 +60,7 @@ namespace ELFLoader
         return get_symbol_by_name("tohost");
     }
 
-    bool ELFFile::load(const Sim::Memory::BaseDramPtr &dram)
+    bool ELFFile::load_to(const Sim::Memory::BaseDramPtr &dram)
     {
         for (auto seg: reader.segments)
         {

@@ -13,6 +13,10 @@ namespace Sim::CPU::Pipeline
     public:
         Fetch1(const Config::JsonConfig &cfg, id_t id, BaseCPU &cpu);
 
+        void set_addr(Addr addr);
+
+        void reset() override;
+
         void tick() override;
 
         void advance() override;

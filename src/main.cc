@@ -26,8 +26,7 @@ void reset_dir()
     char *last_token;
 
     getcwd(cwd, DIR_NAME_BUFF);
-    CL_INFO("Current Working Directory is: ");
-    CL_INFO(cwd);
+    spdlog::info("Current Working Directory is: {}.", cwd);
 
     token = strtok(cwd, "/");
     while (token != nullptr)
@@ -38,13 +37,11 @@ void reset_dir()
 
     if (strcmp(last_token, "build") == 0)
     {
-        CL_WARN("Last component of CWD is:");
-        CL_WARN(last_token);
-        CL_WARN("Changing working directory to upper level '..'");
+        spdlog::warn("Last component of CWD is: {}.", last_token);
+        spdlog::warn("Changing working directory to upper level '..'");
         chdir("..");
         getcwd(cwd, DIR_NAME_BUFF);
-        CL_INFO("Current Working Directory is: ");
-        CL_INFO(cwd);
+        spdlog::info("Current Working Directory is: {}.", cwd);
     }
 }
 
@@ -56,7 +53,27 @@ int main()
     Config::JsonConfig config = open_config(CONFIG_FILE);
     Logging::LoggerPtr logger = init_logging(config["log"]);
     ELFLoader::ELFFile elf("./tests/bbl-linux", logger);
-    Simulation sim(config["sim"], logger, std::move(elf));
+    Simulation sim(config["sim"], logger, elf);
+    sim.reset();
 
+    size_t max_cycles = config["sim"]["max_cycles"];
+
+    for (size_t i = 0; i <= max_cycles; i++)
+    {
+        if (unlikely(Sim::finished))
+        {
+            logger->info("Simulation finished at cycle {}.", i);
+            goto exit;
+        }
+        else
+        {
+            sim.tick();
+            continue;
+        }
+    }
+
+    logger->critical("Simulation terminated, maximum cycles of {:d} exceeded.", max_cycles);
+
+    exit:
     return 0;
 }

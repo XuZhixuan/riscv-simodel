@@ -11,8 +11,8 @@
 namespace Sim::Factory
 {
     /**
-     * @brief SimObject Construct Factory
-     *
+     * SimObject Construct Factory
+     * @tparam Args
      */
     template<typename ...Args>
     class BaseFactory
@@ -53,6 +53,10 @@ namespace Sim::Factory
         class Register
         {
         public:
+            /**
+             * Constructor of register, used to register typename with class constructor
+             * @param type
+             */
             explicit Register(const std::string &type)
             {
                 BaseFactory::instance().registerComponent(
@@ -62,6 +66,13 @@ namespace Sim::Factory
             }
 
         protected:
+            /**
+             * Internal function called to create a Component_T instance
+             * @param cfg
+             * @param id
+             * @param args
+             * @return
+             */
             static SimObjectPtr createComponent(const Config::JsonConfig &cfg, id_t id, Args... args)
             {
                 return std::make_shared<Component_T>(cfg, id, args...);
@@ -69,12 +80,12 @@ namespace Sim::Factory
         };
 
         /**
-         * @brief Get a new SimObject instance with its name and config
-         * 
-         * @param type 
-         * @param cfg 
-         * @param id 
-         * @return SimObjectPtr (std::shared_ptr<SimObject>)
+         * Get a new SimObject instance with its name and config
+         * @param type
+         * @param cfg
+         * @param id
+         * @param args
+         * @return SimObjectPtr new component with given config
          */
         SimObjectPtr newComponent(const std::string &type, const Config::JsonConfig &cfg, id_t id, Args ...args)
         {

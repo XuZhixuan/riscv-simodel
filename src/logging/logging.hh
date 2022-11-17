@@ -9,7 +9,8 @@
 
 #include "config/config.hh"
 
-namespace Logging {
+namespace Logging
+{
     typedef std::shared_ptr<spdlog::logger> LoggerPtr;
 
     /**

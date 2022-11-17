@@ -3,7 +3,7 @@
 #include <iostream>
 #include "spdlog/spdlog.h"
 
-template <typename... T>
+template<typename... T>
 void lprint(const T &...items)
 {
     (std::cout << ... << items);
