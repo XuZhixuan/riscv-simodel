@@ -1,8 +1,6 @@
 #pragma once
 
 #include "common/common.hh"
-#include "logging/logging.hh"
-#include "timing/Clock.hh"
 
 namespace Sim
 {

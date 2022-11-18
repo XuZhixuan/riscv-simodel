@@ -11,9 +11,9 @@ namespace Sim::CPU::Pipeline
     struct TransactionId
     {
         // ID of hart making this transaction
-        ThreadId hart_id;
+        ThreadId hart_id = UINT16_MAX;
         // ID of the transaction
-        uint16_t trans_id;
+        size_t trans_id = SIZE_T_MAX;
     };
 
     /**
@@ -21,7 +21,7 @@ namespace Sim::CPU::Pipeline
      */
     enum MemOpcode
     {
-        Fetch, Load, Store, AMO, Flush, FlushAll
+        Fetch, Load, Store, AMO, Flush, FlushAll, None
     };
 
     /**
@@ -29,18 +29,18 @@ namespace Sim::CPU::Pipeline
      */
     struct MemRequest
     {
-        // Transaction ID
-        TransactionId trans_id;
+        // Transaction Identifier
+        TransactionId trans_id {};
         // Requested address
-        Addr addr;
+        Addr addr = UINT64_MAX;
         // Operation code
-        MemOpcode opcode;
+        MemOpcode opcode = None;
         // Requested length
-        uint16_t length;
+        uint16_t length = UINT16_MAX;
         // pointer to store data to
-        u_char *data;
+        u_char *data = nullptr;
         // masked bytes
-        uint64_t byte_mask;
+        uint64_t byte_mask = 0;
     };
 
     /**
@@ -51,13 +51,13 @@ namespace Sim::CPU::Pipeline
         // Transaction ID
         TransactionId trans_id;
         // Requested address
-        Addr addr;
+        Addr addr = UINT64_MAX;
         // Operation code
-        MemOpcode opcode;
+        MemOpcode opcode = None;
         // Requested length
-        uint16_t length;
+        uint16_t length = UINT16_MAX;
         // pointer to store data to
-        u_char *data;
+        u_char *data = nullptr;
         // exception info
         Exception exception;
     };
@@ -72,7 +72,7 @@ namespace Sim::CPU::Pipeline
 
     struct StageAck
     {
-        uint64_t taken_inst_count;
+        uint64_t taken_inst_count = 0;
     };
 
     typedef std::vector<DynInstPtr> InstPkg;

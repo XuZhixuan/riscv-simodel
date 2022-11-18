@@ -12,7 +12,8 @@
         "stages": [
           {
             "type": "Fetch1",
-            "fetch_byte_width": 8
+            "fetch_byte_width": 8,
+            "max_inflight_fetches": 8
           }
         ]
       }

@@ -6,15 +6,15 @@ namespace Sim::CPU
 {
     struct Exception
     {
-        bool valid;
-        Xlen cause;
-        Xlen trap_val;
+        bool valid = false;
+        Xlen cause = UINT64_MAX;
+        Xlen trap_val =UINT64_MAX;
     };
 
     struct Prediction
     {
-        bool taken;
-        Addr target;
+        bool taken = false;
+        Addr target = UINT64_MAX;
     };
 
     class DynInst

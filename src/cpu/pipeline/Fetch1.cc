@@ -6,8 +6,10 @@ namespace Sim::CPU::Pipeline
 
     Fetch1::Fetch1(const Config::JsonConfig &cfg, BaseCPU &cpu)
             : BaseStage("Fetch1", cpu),
-              m_fetchByteWidth(cfg["fetch_byte_width"]),
-              m_iCacheByteWidth(cfg["fetch_byte_width"]),
+              m_fetch_byte_width(cfg["fetch_byte_width"]),
+              m_iCache_align_byte(cfg["fetch_byte_width"]),
+              m_iCache_byte_width(cfg["fetch_byte_width"]),
+              m_inflight_fetches("Fetch1InflightQueue", cfg["max_inflight_fetches"]),
               m_pc("PCRegister", 1)
     {
         //
@@ -15,16 +17,17 @@ namespace Sim::CPU::Pipeline
 
     void Fetch1::set_addr(Addr addr)
     {
-        //
+        m_pc.get_in_port()->set_data(addr);
     }
 
     MemRequest Fetch1::prepare_mem_request()
     {
+        InflightFetch fetch(m_fetch_byte_width);
         MemRequest request{
-            .trans_id = {m_cpu.tid, 0},
+            .trans_id = {m_cpu.tid, m_inflight_fetches.push(fetch)},
             .addr = m_pc.get_out_port()->get_data(),
             .opcode = MemOpcode::Fetch,
-            .length = m_fetchByteWidth
+            .length = m_fetch_byte_width,
         };
 
         return request;
